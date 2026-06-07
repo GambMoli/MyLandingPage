@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useLanguage } from "../i18n";
@@ -111,7 +110,7 @@ export function Hero() {
   ];
 
   return (
-    <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#0A0A0A" }}>
+    <section id="hero-section" style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#0A0A0A" }}>
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
         <motion.div animate={{ x: [0, 30, 0], y: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} style={{ position: "absolute", width: 600, height: 600, top: "-10%", left: "20%", background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)", borderRadius: "50%", filter: "blur(40px)" }} />
         <motion.div animate={{ x: [0, -25, 0], y: [0, 25, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} style={{ position: "absolute", width: 500, height: 500, bottom: "10%", right: "10%", background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)", borderRadius: "50%", filter: "blur(40px)" }} />
@@ -160,7 +159,7 @@ export function Hero() {
           </a>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
+        <motion.div id="hero-socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
           <span style={{ color: "#4B5563", fontSize: 13 }}>{copy.findMe}</span>
           <div style={{ height: 1, width: 40, background: "rgba(255,255,255,0.1)" }} />
           {[
@@ -175,18 +174,17 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-        <span style={{ color: "#4B5563", fontSize: 12, fontFamily: "var(--font-mono)" }}>{copy.scroll}</span>
-        <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 24, height: 38, border: "2px solid rgba(255,255,255,0.15)", borderRadius: 12, display: "flex", justifyContent: "center", paddingTop: 6 }}>
-          <div style={{ width: 4, height: 8, background: "#3B82F6", borderRadius: 2 }} />
-        </motion.div>
-      </motion.div>
-
       <style>{`
         @media (max-width: 768px) {
+          #hero-section {
+            min-height: auto !important;
+            padding-bottom: 56px;
+          }
+
           #hero-actions {
             flex-direction: column;
             width: 100%;
+            margin-bottom: 2rem !important;
           }
 
           #hero-actions a {
@@ -196,6 +194,11 @@ export function Hero() {
 
           #hero-shell {
             padding-top: 144px !important;
+          }
+
+          #hero-socials {
+            gap: 14px !important;
+            padding-bottom: 8px;
           }
         }
 
