@@ -20,7 +20,7 @@ export function Footer() {
         { label: "Servicios", href: "#services" },
         { label: "Contacto", href: "#contact" },
       ],
-      rights: "© 2024 Gabriel Molina. Todos los derechos reservados.",
+      rights: "© 2025 Gabriel Molina. Todos los derechos reservados.",
       built: "Hecho con React · TypeScript · Tailwind CSS",
     },
     en: {
