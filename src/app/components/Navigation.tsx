@@ -42,6 +42,17 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <nav
       style={{
@@ -51,9 +62,11 @@ export function Navigation() {
         right: 0,
         zIndex: 100,
         transition: "all 0.3s ease",
-        backgroundColor: scrolled ? "rgba(10,10,10,0.85)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+        backgroundColor:
+          scrolled || menuOpen ? "rgba(10,10,10,0.92)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(20px)" : "none",
+        borderBottom:
+          scrolled || menuOpen ? "1px solid rgba(255,255,255,0.06)" : "none",
       }}
     >
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 2rem" }}>
@@ -180,11 +193,14 @@ export function Navigation() {
         {menuOpen && (
           <div
             style={{
-              padding: "1rem 0",
+              padding: "1rem 0 1.2rem",
               borderTop: "1px solid rgba(255,255,255,0.08)",
               display: "flex",
               flexDirection: "column",
               gap: 4,
+              background: "rgba(10,10,10,0.96)",
+              maxHeight: "calc(100vh - 68px)",
+              overflowY: "auto",
             }}
           >
             <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
@@ -227,6 +243,25 @@ export function Navigation() {
                 {link.label}
               </a>
             ))}
+
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                marginTop: 12,
+                background: "linear-gradient(135deg, #3B82F6, #8B5CF6)",
+                color: "#fff",
+                textDecoration: "none",
+                padding: "12px 16px",
+                borderRadius: 10,
+                fontSize: 14,
+                fontWeight: 600,
+                fontFamily: "var(--font-body)",
+                textAlign: "center",
+              }}
+            >
+              {copy.cta}
+            </a>
           </div>
         )}
       </div>

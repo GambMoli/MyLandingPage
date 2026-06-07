@@ -57,6 +57,7 @@ function FloatingBadge({ label, color, bg, x, y, delay }: { label: string; color
         fontFamily: "var(--font-mono)",
         boxShadow: `0 0 12px ${color}20`,
         whiteSpace: "nowrap",
+        pointerEvents: "none",
       }}
     >
       {label}
@@ -65,8 +66,6 @@ function FloatingBadge({ label, color, bg, x, y, delay }: { label: string; color
 }
 
 export function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const { language } = useLanguage();
 
   const copy = {
@@ -100,14 +99,6 @@ export function Hero() {
     },
   }[language];
 
-  useEffect(() => {
-    const handleMouse = (event: MouseEvent) => {
-      setMousePos({ x: event.clientX, y: event.clientY });
-    };
-    window.addEventListener("mousemove", handleMouse);
-    return () => window.removeEventListener("mousemove", handleMouse);
-  }, []);
-
   const badgePositions = [
     { x: "5%", y: "20%", delay: 0 },
     { x: "8%", y: "60%", delay: 0.5 },
@@ -128,13 +119,13 @@ export function Hero() {
 
       <GridPattern />
 
-      <div style={{ display: "none" }} className="badges-desktop">
+      <div style={{ display: "none", pointerEvents: "none" }} className="badges-desktop">
         {techBadges.map((badge, index) => (
           <FloatingBadge key={badge.label} {...badge} {...badgePositions[index]} />
         ))}
       </div>
 
-      <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: 900, padding: "0 2rem", paddingTop: 80 }}>
+      <div id="hero-shell" style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: 900, padding: "0 2rem", paddingTop: 120 }}>
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: "2rem" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.3)", borderRadius: 100, padding: "6px 16px" }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#10B981", boxShadow: "0 0 8px #10B981" }} />
@@ -160,7 +151,7 @@ export function Hero() {
           {copy.description}
         </motion.p>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.45 }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: "3rem", flexWrap: "wrap" }}>
+        <motion.div id="hero-actions" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.45 }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: "3rem", flexWrap: "wrap" }}>
           <a href="#projects" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg, #3B82F6, #8B5CF6)", color: "#fff", textDecoration: "none", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 600, boxShadow: "0 0 30px rgba(59,130,246,0.3)" }}>
             {copy.viewProjects} <ArrowRight size={16} />
           </a>
@@ -192,6 +183,22 @@ export function Hero() {
       </motion.div>
 
       <style>{`
+        @media (max-width: 768px) {
+          #hero-actions {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          #hero-actions a {
+            width: min(100%, 320px);
+            justify-content: center;
+          }
+
+          #hero-shell {
+            padding-top: 144px !important;
+          }
+        }
+
         @media (min-width: 1024px) {
           .badges-desktop { display: block !important; }
         }
