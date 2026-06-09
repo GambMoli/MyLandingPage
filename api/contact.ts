@@ -71,6 +71,19 @@ export default async function handler(req: any, res: any) {
     return;
   }
 
+  const brevoPayload = await brevoResponse.json().catch(() => null);
+  const messageId =
+    brevoPayload && typeof brevoPayload === "object" && "messageId" in brevoPayload
+      ? String((brevoPayload as { messageId?: string }).messageId)
+      : null;
+
+  console.log("Contact email accepted by Brevo", {
+    recipientEmail,
+    senderEmail,
+    replyToEmail: email,
+    messageId,
+  });
+
   res.status(200).json({ ok: true });
 }
 
