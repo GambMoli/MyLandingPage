@@ -1,440 +1,132 @@
-import { motion, useInView } from "motion/react";
-import { useRef } from "react";
-import { ExternalLink } from "lucide-react";
+import { ArrowUpRight, Check, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { projects, type Project } from "../../content/profile";
 import { useLanguage } from "../i18n";
 
-type Project = {
-  id: number;
-  title: {
-    es: string;
-    en: string;
-  };
-  category: {
-    es: string;
-    en: string;
-  };
-  description: {
-    es: string;
-    en: string;
-  };
-  highlights: {
-    es: string[];
-    en: string[];
-  };
-  techs: string[];
-  image: string;
-  accent: string;
-  demo: string;
-};
-
-const projects: Project[] = [
-  {
-    id: 1,
-    title: {
-      es: "Plataforma de gestion de construccion",
-      en: "Construction Management Platform",
-    },
-    category: {
-      es: "Software empresarial",
-      en: "Business Software",
-    },
-    description: {
-      es: "Plataforma para constructoras enfocada en control operativo, seguimiento de obras, supervisores, clientes y reportes en tiempo real.",
-      en: "A construction operations platform focused on project tracking, supervisors, clients, and real-time reporting.",
-    },
-    highlights: {
-      es: [
-        "Seguimiento de obras y estados",
-        "Gestion de personal y asistencia",
-        "Panel operativo con reportes",
-      ],
-      en: [
-        "Project and status tracking",
-        "Workforce and attendance management",
-        "Operational dashboard with reporting",
-      ],
-    },
-    techs: ["React", "NestJS", "PostgreSQL", "AWS"],
-    image: "/obras.png",
-    accent: "#3B82F6",
-    demo: "#contact",
-  },
-  {
-    id: 2,
-    title: {
-      es: "ERP de finanzas e inventario",
-      en: "Finance and Inventory ERP",
-    },
-    category: {
-      es: "ERP",
-      en: "ERP",
-    },
-    description: {
-      es: "Sistema ERP para inventario, finanzas, clientes, proveedores y control administrativo con una interfaz clara para la operacion diaria.",
-      en: "An ERP system for inventory, finance, clients, suppliers, and administrative control with a clear daily-operations interface.",
-    },
-    highlights: {
-      es: [
-        "Inventario y catalogo de productos",
-        "Modulos de finanzas y compras",
-        "Gestion centralizada del negocio",
-      ],
-      en: [
-        "Inventory and product catalog",
-        "Finance and purchasing modules",
-        "Centralized business management",
-      ],
-    },
-    techs: ["Angular", "TypeScript", "PostgreSQL", "AWS"],
-    image: "/ERP.png",
-    accent: "#8B5CF6",
-    demo: "#contact",
-  },
-  {
-    id: 3,
-    title: {
-      es: "Plataforma de deteccion de bots con IA",
-      en: "AI Bot Detection Platform",
-    },
-    category: {
-      es: "Ciberseguridad e IA",
-      en: "Cybersecurity and AI",
-    },
-    description: {
-      es: "Dashboard para deteccion de trafico automatizado, metricas de comportamiento y monitoreo continuo de amenazas en tiempo real.",
-      en: "A monitoring dashboard for automated traffic detection, behavior metrics, and continuous real-time threat analysis.",
-    },
-    highlights: {
-      es: [
-        "Deteccion de bots y trafico sospechoso",
-        "Metricas visuales en tiempo real",
-        "Monitoreo de retos, verificacion y respuesta API",
-      ],
-      en: [
-        "Bot and suspicious traffic detection",
-        "Real-time visual metrics",
-        "Challenge, verification, and API response monitoring",
-      ],
-    },
-    techs: ["Python", "FastAPI", "Angular", "AWS"],
-    image: "/Botdetection.png",
-    accent: "#EF4444",
-    demo: "#contact",
-  },
-  {
-    id: 4,
-    title: {
-      es: "Tutor de calculo con IA",
-      en: "AI Calculus Tutor",
-    },
-    category: {
-      es: "Educacion e IA",
-      en: "Education and AI",
-    },
-    description: {
-      es: "Tutor academico conversacional que habla con el estudiante, resuelve ejercicios de calculo y lo guia paso a paso en algebra, estadistica y matematicas.",
-      en: "A conversational academic tutor that talks with students, solves calculus exercises, and guides them step by step through algebra, statistics, and math.",
-    },
-    highlights: {
-      es: [
-        "Agente conversacional para estudiantes",
-        "Soporte para calculo, algebra y estadistica",
-        "Experiencia guiada para resolver ejercicios",
-      ],
-      en: [
-        "Conversational agent for students",
-        "Support for calculus, algebra, and statistics",
-        "Guided experience for solving exercises",
-      ],
-    },
-    techs: ["React", "AI Agents", "TypeScript", "AWS"],
-    image: "/Chatbot.png",
-    accent: "#2563EB",
-    demo: "#contact",
-  },
-];
-
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+export function Projects() {
   const { language } = useLanguage();
+  const [selected, setSelected] = useState<Project | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const copy = {
+    es: {
+      title: "Proyectos destacados",
+      intro: "Productos que construí para resolver problemas reales de operación, automatización, analítica e inteligencia artificial.",
+      details: "Ver detalle",
+      features: "Qué incluye",
+      talk: "Hablemos de un proyecto así",
+      close: "Cerrar",
+      shot: "Captura de",
+    },
+    en: {
+      title: "Featured work",
+      intro: "Products I built to solve real problems in operations, automation, analytics and artificial intelligence.",
+      details: "View details",
+      features: "What's included",
+      talk: "Let's talk about a project like this",
+      close: "Close",
+      shot: "Screenshot of",
+    },
+  }[language];
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (selected && !dialog.open) dialog.showModal();
+    if (!selected && dialog.open) dialog.close();
+  }, [selected]);
 
   return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
-      style={{
-        background: "rgba(13, 17, 28, 0.82)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 28,
-        overflow: "hidden",
-        boxShadow: "0 24px 80px rgba(0,0,0,0.28)",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          aspectRatio: "16 / 10",
-          overflow: "hidden",
-          background: "#101828",
+    <section className="section" id="work">
+      <div className="wrap">
+        <header className="section__head">
+          <h2 className="section__title">{copy.title}</h2>
+          <p className="section__intro">{copy.intro}</p>
+        </header>
+
+        <div className="projects">
+          {projects.map((project) => (
+            <button type="button" className="project" key={project.id} onClick={() => setSelected(project)}>
+              <div className="project__media">
+                <img
+                  src={project.image}
+                  alt={`${copy.shot} ${project.title[language].toLowerCase()}`}
+                  loading="lazy"
+                  width={1600}
+                  height={1000}
+                />
+                <span className="project__badge">{project.category[language]}</span>
+              </div>
+              <div>
+                <div className="project__row">
+                  <h3 className="project__title">{project.title[language]}</h3>
+                  <span className="project__more">
+                    {copy.details}
+                    <ArrowUpRight size={15} />
+                  </span>
+                </div>
+                <p className="project__desc">{project.description[language]}</p>
+                <div className="tags">
+                  {project.techs.map((tech) => (
+                    <span className="tag" key={tech}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <dialog
+        ref={dialogRef}
+        className="modal"
+        aria-labelledby="project-modal-title"
+        onClose={() => setSelected(null)}
+        onClick={(event) => {
+          // Clic en el fondo (fuera del contenido) cierra el modal.
+          if (event.target === event.currentTarget) setSelected(null);
         }}
       >
-        <img
-          src={project.image}
-          alt={project.title[language]}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(180deg, rgba(8,11,18,0.04) 0%, rgba(8,11,18,0.12) 55%, rgba(8,11,18,0.72) 100%)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            left: 18,
-            bottom: 18,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 14px",
-            borderRadius: 999,
-            background: "rgba(10,10,10,0.62)",
-            border: `1px solid ${project.accent}55`,
-            backdropFilter: "blur(10px)",
-          }}
-        >
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: project.accent,
-            }}
-          />
-          <span
-            style={{
-              color: "#F8FAFC",
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            {project.category[language]}
-          </span>
-        </div>
-      </div>
-
-      <div style={{ padding: "28px 24px 24px" }}>
-        <h3
-          style={{
-            color: "#F8FAFC",
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(1.4rem, 2vw, 1.8rem)",
-            lineHeight: 1.15,
-            marginBottom: 14,
-          }}
-        >
-          {project.title[language]}
-        </h3>
-
-        <p
-          style={{
-            color: "#CBD5E1",
-            fontFamily: "var(--font-body)",
-            fontSize: 15,
-            lineHeight: 1.75,
-            marginBottom: 18,
-          }}
-        >
-          {project.description[language]}
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 22 }}>
-          {project.highlights[language].map((highlight) => (
-            <div
-              key={highlight}
-              style={{ display: "flex", alignItems: "flex-start", gap: 10 }}
-            >
-              <span
-                style={{
-                  color: project.accent,
-                  fontSize: 16,
-                  lineHeight: 1.2,
-                  marginTop: 1,
-                }}
-              >
-                •
-              </span>
-              <span
-                style={{
-                  color: "#E2E8F0",
-                  fontFamily: "var(--font-body)",
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                }}
-              >
-                {highlight}
-              </span>
+        {selected ? (
+          <>
+            <div className="modal__media">
+              <img src={selected.image} alt={`${copy.shot} ${selected.title[language].toLowerCase()}`} />
+              <button type="button" className="modal__close" onClick={() => setSelected(null)} aria-label={copy.close}>
+                <X size={18} />
+              </button>
             </div>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
-          {project.techs.map((tech) => (
-            <span
-              key={tech}
-              style={{
-                padding: "7px 12px",
-                borderRadius: 999,
-                border: `1px solid ${project.accent}33`,
-                background: `${project.accent}14`,
-                color: "#F8FAFC",
-                fontFamily: "var(--font-mono)",
-                fontSize: 12,
-                fontWeight: 700,
-              }}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        <a
-          href={project.demo}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            color: project.accent,
-            textDecoration: "none",
-            fontFamily: "var(--font-body)",
-            fontSize: 14,
-            fontWeight: 700,
-          }}
-        >
-          {language === "es" ? "Hablemos de este proyecto" : "Let's talk about this project"}
-          <ExternalLink size={16} />
-        </a>
-      </div>
-    </motion.article>
-  );
-}
-
-export function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const { language } = useLanguage();
-
-  return (
-    <section id="projects" style={{ background: "#0A0A0A", position: "relative" }}>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(circle at top, rgba(37,99,235,0.1), transparent 38%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "120px 2rem" }}>
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          style={{ textAlign: "center", marginBottom: 56 }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 14px",
-              borderRadius: 999,
-              background: "rgba(59,130,246,0.12)",
-              border: "1px solid rgba(59,130,246,0.25)",
-              marginBottom: 20,
-            }}
-          >
-            <span
-              style={{
-                color: "#93C5FD",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                fontFamily: "var(--font-mono)",
-              }}
-            >
-              03 / {language === "es" ? "proyectos" : "projects"}
-            </span>
-          </div>
-
-          <h2
-            style={{
-              color: "#F8FAFC",
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.2rem, 5vw, 4rem)",
-              lineHeight: 1.02,
-              marginBottom: 16,
-            }}
-          >
-            {language === "es" ? "Mis mejores proyectos" : "My Best Projects"}
-          </h2>
-
-          <p
-            style={{
-              color: "#94A3B8",
-              maxWidth: 760,
-              margin: "0 auto",
-              fontSize: 16,
-              lineHeight: 1.8,
-              fontFamily: "var(--font-body)",
-            }}
-          >
-            {language === "es"
-              ? "Una seleccion de productos digitales construidos para resolver problemas reales en operacion, automatizacion, analitica e inteligencia artificial."
-              : "A selection of digital products built to solve real problems in operations, automation, analytics, and artificial intelligence."}
-          </p>
-        </motion.div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 28,
-          }}
-          className="projects-grid"
-        >
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
-      </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .projects-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+            <div className="modal__body">
+              <p className="modal__category">{selected.category[language]}</p>
+              <h3 className="modal__title" id="project-modal-title">
+                {selected.title[language]}
+              </h3>
+              <p className="modal__desc">{selected.description[language]}</p>
+              <ul className="modal__list" aria-label={copy.features}>
+                {selected.highlights[language].map((point) => (
+                  <li key={point}>
+                    <Check size={18} />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <div className="modal__foot">
+                <div className="tags">
+                  {selected.techs.map((tech) => (
+                    <span className="tag" key={tech}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <a className="btn btn--primary" href="#contact" onClick={() => setSelected(null)}>
+                  {copy.talk}
+                </a>
+              </div>
+            </div>
+          </>
+        ) : null}
+      </dialog>
     </section>
   );
 }

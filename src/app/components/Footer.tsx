@@ -1,184 +1,84 @@
-import { Code2, Github, Linkedin, Mail } from "lucide-react";
+import { BOOKING_URL, socials } from "../../content/profile";
 import { useLanguage } from "../i18n";
-
-const SOCIAL_LINKS = {
-  github: "https://github.com/GambMoli",
-  linkedin: "https://www.linkedin.com/in/gabriel-molina-ab1165281",
-  email: "mailto:g.molinabor@gmail.com",
-};
 
 export function Footer() {
   const { language } = useLanguage();
+
   const copy = {
     es: {
-      role: "Ingeniero de Software · Full-Stack Developer · Arquitecto de Software",
-      quote: '"Convirtiendo ideas en soluciones de software escalables."',
+      blurb: "Ingeniero de software full-stack. ERPs, integraciones y plataformas web en AWS.",
+      sections: "Secciones",
       links: [
-        { label: "Sobre mi", href: "#about" },
-        { label: "Stack", href: "#stack" },
-        { label: "Proyectos", href: "#projects" },
+        { label: "Proyectos", href: "#work" },
         { label: "Servicios", href: "#services" },
+        { label: "Experiencia", href: "#experience" },
         { label: "Contacto", href: "#contact" },
       ],
-      rights: "© 2025 Gabriel Molina. Todos los derechos reservados.",
-      built: "Hecho con React · TypeScript · Tailwind CSS",
+      elsewhere: "Encuéntrame",
+      booking: "Agendar llamada",
+      bot: "El asistente de esta página es un clasificador TF-IDF que corre en tu navegador.",
     },
     en: {
-      role: "Software Engineer · Full-Stack Developer · Software Architect",
-      quote: '"Turning ideas into scalable software solutions."',
+      blurb: "Full-stack software engineer. ERPs, integrations and web platforms on AWS.",
+      sections: "Sections",
       links: [
-        { label: "About", href: "#about" },
-        { label: "Stack", href: "#stack" },
-        { label: "Projects", href: "#projects" },
+        { label: "Work", href: "#work" },
         { label: "Services", href: "#services" },
+        { label: "Experience", href: "#experience" },
         { label: "Contact", href: "#contact" },
       ],
-      rights: "© 2024 Gabriel Molina. All rights reserved.",
-      built: "Built with React · TypeScript · Tailwind CSS",
+      elsewhere: "Find me",
+      booking: "Book a call",
+      bot: "This page's assistant is a TF-IDF classifier running in your browser.",
     },
   }[language];
 
   return (
-    <footer
-      style={{
-        background: "#060606",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-        padding: "60px 0 40px",
-      }}
-    >
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 2rem" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: 40,
-            alignItems: "center",
-            marginBottom: 40,
-          }}
-          className="footer-grid"
-        >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-              <div
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 10,
-                  background: "linear-gradient(135deg, #3B82F6, #8B5CF6)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800,
-                  fontSize: 16,
-                  color: "#fff",
-                }}
-              >
-                G
-              </div>
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: 20,
-                  color: "#F9FAFB",
-                }}
-              >
-                Gabriel Molina
+    <footer className="footer">
+      <div className="wrap">
+        <div className="footer__top">
+          <div className="footer__brand">
+            <a className="brand" href="#top">
+              <span className="brand__mark" aria-hidden="true">
+                GM
               </span>
-            </div>
-            <p style={{ color: "#6B7280", fontSize: 13, lineHeight: 1.6, maxWidth: 380 }}>
-              {copy.role}
-            </p>
-            <p style={{ color: "#4B5563", fontSize: 13, marginTop: 8, fontStyle: "italic" }}>
-              {copy.quote}
-            </p>
+              Gabriel Molina
+            </a>
+            <p className="footer__blurb">{copy.blurb}</p>
           </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "flex-end" }}>
-            <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+          <div className="footer__col">
+            <h4>{copy.sections}</h4>
+            <ul>
               {copy.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  style={{
-                    color: "#6B7280",
-                    textDecoration: "none",
-                    fontSize: 13,
-                    fontWeight: 500,
-                  }}
-                >
-                  {link.label}
-                </a>
+                <li key={link.href}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
               ))}
-            </div>
-            <div style={{ display: "flex", gap: 12 }}>
-              {[
-                { icon: Github, href: SOCIAL_LINKS.github, label: "GitHub" },
-                { icon: Linkedin, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
-                { icon: Mail, href: SOCIAL_LINKS.email, label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={label}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#6B7280",
-                    textDecoration: "none",
-                  }}
-                >
-                  <Icon size={16} />
-                </a>
+            </ul>
+          </div>
+          <div className="footer__col">
+            <h4>{copy.elsewhere}</h4>
+            <ul>
+              {socials.map((social) => (
+                <li key={social.id}>
+                  <a href={social.href} {...(social.id === "email" ? {} : { target: "_blank", rel: "noreferrer" })}>
+                    {social.label}
+                  </a>
+                </li>
               ))}
-            </div>
+              <li>
+                <a href={BOOKING_URL} target="_blank" rel="noreferrer">
+                  {copy.booking}
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div
-          style={{
-            paddingTop: 24,
-            borderTop: "1px solid rgba(255,255,255,0.05)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: 12,
-          }}
-        >
-          <span style={{ color: "#374151", fontSize: 12, fontFamily: "var(--font-mono)" }}>
-            {copy.rights}
-          </span>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              color: "#374151",
-              fontSize: 12,
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            <Code2 size={12} />
-            {copy.built}
-          </div>
+        <div className="footer__bottom">
+          <span>© {new Date().getFullYear()} Gabriel Molina</span>
+          <span>{copy.bot}</span>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 600px) {
-          .footer-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </footer>
   );
 }
