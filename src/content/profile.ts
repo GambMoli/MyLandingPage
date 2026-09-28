@@ -127,12 +127,12 @@ export const experience: Role[] = [
     tags: ["Unit tests", "Integration tests", "E2E", "CI/CD", "DevOps"],
   },
   {
-    period: { es: "2022 – hoy", en: "2022 – now" },
+    period: { es: "2022 – jun. 2026", en: "2022 – Jun 2026" },
     role: { es: "Ingeniero de software full-stack", en: "Full-stack software engineer" },
     company: { es: "Nelumbo Consultores", en: "Nelumbo Consultores" },
     description: {
-      es: "Soluciones empresariales, integraciones cloud, ERPs y plataformas de automatización para varias industrias.",
-      en: "Enterprise solutions, cloud integrations, ERPs and automation platforms for several industries.",
+      es: "Construí soluciones empresariales, integraciones cloud, ERPs y plataformas de automatización para varias industrias.",
+      en: "Built enterprise solutions, cloud integrations, ERPs and automation platforms for several industries.",
     },
     tags: ["React", "NestJS", "Spring Boot", "AWS", "PostgreSQL"],
   },

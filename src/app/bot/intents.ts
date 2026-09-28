@@ -59,8 +59,8 @@ export const intents: Intent[] = [
       en: ["how many years of experience", "how much experience do you have", "where have you worked", "work history", "career path", "which companies have you worked for", "professional experience", "how many projects have you delivered", "how long have you been coding", "where has gabriel worked", "how experienced is he"],
     },
     answer: {
-      es: "Más de 4 años haciendo software en producción y más de 20 proyectos entregados. Desde julio de 2026 es programador full stack en 3Pi, trabaja en Nelumbo Consultores desde 2022, estuvo en Humera (2025 – 2026) y hace proyectos freelance desde 2021.",
-      en: "Over 4 years building production software and more than 20 projects delivered. Since July 2026 he's a full-stack developer at 3Pi, he has worked at Nelumbo Consultores since 2022, was at Humera (2025 – 2026) and has done freelance work since 2021.",
+      es: "Más de 4 años haciendo software en producción y más de 20 proyectos entregados. Desde julio de 2026 es programador full stack en 3Pi. Antes estuvo en Nelumbo Consultores (2022 – junio 2026) y en Humera (2025 – 2026), y hace proyectos freelance desde 2021.",
+      en: "Over 4 years building production software and more than 20 projects delivered. Since July 2026 he's a full-stack developer at 3Pi. Before that he was at Nelumbo Consultores (2022 – June 2026) and Humera (2025 – 2026), and he has done freelance work since 2021.",
     },
     next: ["threepi", "nelumbo", "humera", "freelance"],
   },
@@ -79,14 +79,14 @@ export const intents: Intent[] = [
   },
   {
     id: "nelumbo",
-    prompt: { es: "¿Qué hace en Nelumbo?", en: "What does he do at Nelumbo?" },
+    prompt: { es: "¿Qué hizo en Nelumbo?", en: "What did he do at Nelumbo?" },
     examples: {
-      es: ["qué haces en nelumbo", "nelumbo consultores", "nelumbo", "tu rol en nelumbo", "qué hace gabriel en nelumbo"],
-      en: ["what do you do at nelumbo", "nelumbo consultores", "nelumbo", "your role at nelumbo", "what does he do at nelumbo"],
+      es: ["qué haces en nelumbo", "nelumbo consultores", "nelumbo", "tu rol en nelumbo", "qué hace gabriel en nelumbo", "qué hizo en nelumbo"],
+      en: ["what do you do at nelumbo", "nelumbo consultores", "nelumbo", "your role at nelumbo", "what does he do at nelumbo", "what did he do at nelumbo"],
     },
     answer: {
-      es: "En Nelumbo Consultores, desde 2022, es ingeniero de software full-stack: soluciones empresariales, integraciones cloud, ERPs y plataformas de automatización para varias industrias. Stack: React, NestJS, Spring Boot, AWS y PostgreSQL.",
-      en: "At Nelumbo Consultores, since 2022, he's a full-stack software engineer: enterprise solutions, cloud integrations, ERPs and automation platforms across industries. Stack: React, NestJS, Spring Boot, AWS and PostgreSQL.",
+      es: "En Nelumbo Consultores, de 2022 a junio de 2026, fue ingeniero de software full-stack: construyó soluciones empresariales, integraciones cloud, ERPs y plataformas de automatización para varias industrias. Stack: React, NestJS, Spring Boot, AWS y PostgreSQL.",
+      en: "At Nelumbo Consultores, from 2022 to June 2026, he was a full-stack software engineer: he built enterprise solutions, cloud integrations, ERPs and automation platforms across industries. Stack: React, NestJS, Spring Boot, AWS and PostgreSQL.",
     },
     next: ["humera", "projects"],
   },
