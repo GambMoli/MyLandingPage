@@ -2,7 +2,6 @@ import path from "path";
 import { loadEnv } from "vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 
 function escapeHtml(value: string) {
   return value
@@ -19,7 +18,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       react(),
-      tailwindcss(),
       {
         name: "local-contact-api",
         configureServer(server) {
